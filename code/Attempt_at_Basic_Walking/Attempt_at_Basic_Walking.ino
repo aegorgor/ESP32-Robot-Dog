@@ -27,11 +27,19 @@ Adafruit_PWMServoDriver pca9685 = Adafruit_PWMServoDriver(0x40);
 #define X 51.29
 #define Y 38.71
 
+
+
+#define SERVOMIN2  66
+#define SERVOMAX2  584
+#define fRATIO0 2.4079
+#define fRATIO1 2.4079
+#define fRATIO2 2.3544
+#define fRATIO3 2.3276
+
 #define SERVOMIN  78 
 #define SERVOMAX  557  
 #define RATIO 2.22477
 #define RATIO2 2.31 //for t0 and f3
-#define SERVO3OFFSET 14
 #define VERTICALABDUCTOR02 230
 #define KNEEMOVE 111 //50 degress of movement
 
@@ -115,6 +123,15 @@ void setup() {
 
 void loop() {
 
+  /*delay(3000);
+  defaultPosition();
+  delay(3000);
+  legHeight(145, 0);
+  legHeight(145, 1);
+  legHeight(145, 2);
+  legHeight(145, 3);
+  interpolate("0123");*/
+  
   //STATE 1
   stepForth(140, 15, 0); //Position B
   stepForth(140, 15, 2);
@@ -127,17 +144,16 @@ void loop() {
   stepForth(170, -30, 3); 
   interpolate("0123"); 
 
-  stepForth(130, 15, 1); //Position B
-  stepForth(130, 15, 3);
-  stepForth(160, -15, 0); //MID point betwreen C and A
-  stepForth(160, -15, 2);
+  stepForth(140, 15, 1); //Position B
+  stepForth(140, 15, 3);
+  stepForth(170, -15, 0); //MID point betwreen C and A
+  stepForth(170, -15, 2);
   interpolate("0123");
-  stepForth(160, 30, 1); //Position B
-  stepForth(160, 30, 3);
-  stepForth(160, -30, 0); //
-  stepForth(160, -30, 2); 
-  interpolate("0123");   
-
+  stepForth(170, 30, 1); //Position B
+  stepForth(170, 30, 3);
+  stepForth(170, -30, 0); //
+  stepForth(170, -30, 2); 
+  interpolate("0123");
 }
 
 void walkingSequence()
@@ -263,9 +279,10 @@ void interpolate(String legs)
       fServoVal0 = fServoVal0 + fServoValChange0;
       tServoVal0 = tServoVal0 + tServoValChange0;
       aServoVal0 = aServoVal0 + aServoValChange0;
-
-      pca9685.setPWM(fSER0, 0, SERVOMIN + (36 + fServoVal0) * RATIO2);
-      pca9685.setPWM(tSER0, 0, SERVOMIN + (tServoVal0 - 2.2)*RATIO2);
+      
+      pca9685.setPWM(fSER0, 0, SERVOMIN2 + (fServoVal0 + 47) * fRATIO0);
+      //pca9685.setPWM(fSER0, 0, SERVOMIN + (36 + fServoVal0) * RATIO2);
+      pca9685.setPWM(tSER0, 0, SERVOMIN + (tServoVal0 - 2.2)*RATIO); //RATIO2
       pca9685.setPWM(aSER0, 0, SERVOMIN + (aServoVal0 + 68.32) * RATIO);
     }
     if (legs.charAt(1) == '1')
@@ -273,8 +290,9 @@ void interpolate(String legs)
       fServoVal1 = fServoVal1 + fServoValChange1;
       tServoVal1 = tServoVal1 + tServoValChange1;
       aServoVal1 = aServoVal1 + aServoValChange1;
-
-      pca9685.setPWM(fSER1, 0, SERVOMIN + (36 + fServoVal1) * RATIO);
+      
+      pca9685.setPWM(fSER1, 0, SERVOMIN2 + (fServoVal0 + 45) * fRATIO1);
+      //pca9685.setPWM(fSER1, 0, SERVOMIN + (36 + fServoVal1) * RATIO);
       pca9685.setPWM(tSER1, 0, SERVOMIN + (tServoVal1 - 10)*RATIO);
       pca9685.setPWM(aSER1, 0, SERVOMAX - (42.26 + aServoVal1) * RATIO);
     }
@@ -283,8 +301,9 @@ void interpolate(String legs)
       fServoVal2 = fServoVal2 + fServoValChange2;
       tServoVal2 = tServoVal2 + tServoValChange2;
       aServoVal2 = aServoVal2 + aServoValChange2;
-      
-      pca9685.setPWM(fSER2, 0, SERVOMAX - (43 + fServoVal2) * RATIO);
+
+      pca9685.setPWM(fSER2, 0, SERVOMAX2 - (fServoVal2 + 48) * fRATIO2);      
+      //pca9685.setPWM(fSER2, 0, SERVOMAX - (43 + fServoVal2) * RATIO);
       pca9685.setPWM(tSER2, 0, SERVOMAX - (tServoVal2 - 5)*RATIO);
       pca9685.setPWM(aSER2, 0, SERVOMIN + (74.61 + aServoVal2) * RATIO);
     }
@@ -293,8 +312,9 @@ void interpolate(String legs)
       fServoVal3 = fServoVal3 + fServoValChange3;
       tServoVal3 = tServoVal3 + tServoValChange3;
       aServoVal3 = aServoVal3 + aServoValChange3;
-      
-      pca9685.setPWM(fSER3, 0, SERVOMAX - (38 + fServoVal3) * RATIO);
+
+      pca9685.setPWM(fSER3, 0, SERVOMAX2 - (fServoVal3 + 47) * fRATIO3);
+      //pca9685.setPWM(fSER3, 0, SERVOMAX - (38 + fServoVal3) * RATIO);
       pca9685.setPWM(tSER3, 0, SERVOMAX - (tServoVal3 - 5)*RATIO);
       pca9685.setPWM(aSER3, 0, SERVOMAX - (45.40 + aServoVal3) * RATIO);
 
@@ -370,12 +390,12 @@ void defaultPosition()
   pca9685.setPWM(aSER1, 0, 700 - VERTICALABDUCTOR02 - 7);
   pca9685.setPWM(aSER2, 0, VERTICALABDUCTOR02 + 10);
   pca9685.setPWM(aSER3, 0, 700 - VERTICALABDUCTOR02 - 14);
-
+  
   //PARALLEL FEMURS
-  pca9685.setPWM(fSER0, 0, SERVOMIN + 36 * RATIO);
-  pca9685.setPWM(fSER1, 0, SERVOMIN + 36 * RATIO);
-  pca9685.setPWM(fSER2, 0, SERVOMAX - 43 * RATIO);
-  pca9685.setPWM(fSER3, 0, SERVOMAX - 38 * RATIO2);
+  pca9685.setPWM(fSER0, 0, SERVOMIN2 + 47 * fRATIO0);
+  pca9685.setPWM(fSER1, 0, SERVOMIN2 + 45 * fRATIO1);
+  pca9685.setPWM(fSER2, 0, SERVOMAX2 - 48 * fRATIO2);
+  pca9685.setPWM(fSER3, 0, SERVOMAX2 - 47 * fRATIO3);
 
   //KNEES IN VERTICAL POSITION
   pca9685.setPWM(tSER0, 0, SERVOMIN); //5 degrees above horizontal
