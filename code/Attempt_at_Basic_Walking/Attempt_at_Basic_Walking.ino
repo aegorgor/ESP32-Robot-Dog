@@ -26,8 +26,8 @@ Adafruit_PWMServoDriver pca9685 = Adafruit_PWMServoDriver(0x40);
 #define ROD 33.58
 #define X 51.29
 #define Y 38.71
-#define ABDUCTOR_OFFSET 39.20//42.66
-#define ABDUCTOR_LEG_ANGLE 70.48//72.12
+#define ABDUCTOR_OFFSET 40.45//42.66  //39.20
+#define ABDUCTOR_LEG_ANGLE 72.05//72.12 //70.48
 
 
 #define SERVOMIN2  66
@@ -105,7 +105,7 @@ double femurAngleVal;
 double tibiaAngleVal;
 
 int counter = 1;
-int walkCycle = 200000;
+
 
 void legHeight(double desiredHeight, int leg);
 void straightWalkingSequence();
@@ -116,7 +116,9 @@ void stepForth(double desiredHeight, double forwardDist, int leg);
 void sideStep(double latDist, double forwardDist, double legHeight, int leg);
 void interpolate(String legs);
 void verticalAbductors();
-
+void turningWalkingSequence(double walkCycle);
+void turningWalkingSequenceClockwise(double walkCycle);
+void turningWalkingSequenceCounterClockwise(double walkCycle);
 
 void setup() {
   Serial.begin(115200);
@@ -128,61 +130,89 @@ void setup() {
   //legHeight(160, 2);
   //legHeight(160, 3);
   //interpolate("0123");
+  
 }
 
 void loop() {
-
-  /*sideStep(0,0, 140, 0);
-  interpolate("0...");
-  delay(2000);
-  sideStep(70, 0, 140, 0);
-  interpolate("0...");
-  delay(2000);
-  sideStep(-70, 0, 140, 0);
-  interpolate("0...");
-  delay(2000);
+  int walkCycle = 200000;
+//  straightWalkingSequence(walkCycle);
+  //
+  //Clockwise(walkCycle);
+  //turningWalkingSequenceCounterClockwise(walkCycle);
+      //pca9685.setPWM(fSER2, 0, SERVOMAX2 - (0 + 48) * fRATIO2);
+    //pca9685.setPWM(tSER2, 0, SERVOMAX2 - 13 - 0 * tRATIO2);
+    //pca9685.setPWM(aSER2, 0, SERVOMIN + (74.61 + 0) * RATIO);
+    
+      pca9685.setPWM(fSER3, 0, SERVOMAX2 - (0 + 47) * fRATIO3);
+      pca9685.setPWM(tSER3, 0, SERVOMAX2 - 13 - 0 * tRATIO3);
+      pca9685.setPWM(aSER3, 0, SERVOMAX - (45.40 + 0) * RATIO); 
   
-  sideStep(70, 0, 120, 0);
-  interpolate("0...");
-  sideStep(0, 70, 120, 0);
-  interpolate("0...");
-  sideStep(-70, 0, 120, 0);
-  interpolate("0...");
-  sideStep(0, -70, 120, 0);
-  interpolate("0...");*/
-  //straightWalkingSequence();
-
-  //stepForth(140, 15, 0); //Position B
-  sideStep(-35, 15, 140, 0); 
-  stepForth(140, 15, 2);
-  //stepForth(170, -15, 1); //MID point betwreen C and A
-  sideStep(-35, -15, 170, 1);
-  stepForth(170, -15, 3);
-  interpolate("0123");
-  
-  //stepForth(170, 30, 0); //Position B
-  sideStep(-35, 30, 170, 0);
-  stepForth(170, 30, 2);
-  //stepForth(170, -30, 1); //
-  sideStep(-35, -30, 170, 1);
-  stepForth(170, -30, 3);
-  interpolate("0123");
-
-  //stepForth(140, 15, 1); //Position B
-  sideStep(-35, 15, 140, 1);
-  stepForth(140, 15, 3);
-  //stepForth(170, -15, 0); //MID point betwreen C and A
-  sideStep(-35, -15, 170, 0);
-  stepForth(170, -15, 2);
-  interpolate("0123");
-  //stepForth(170, 30, 1); //Position B
-  sideStep(-35, 30, 170, 1);
-  stepForth(170, 30, 3);
-  //stepForth(170, -30, 0);
-  sideStep(-35, -30, 170, 0);
-  stepForth(170, -30, 2);
-  interpolate("0123");
 }
+void turningWalkingSequenceCounterClockwise(double walkCycle)
+{
+  sideStep(170, 0, 25, 1); //opp legs push away
+  sideStep(170, 0, 25, 3);
+  sideStep(130, 0, 0, 0); //other legs raise
+  sideStep(130, 0, 0, 2);  
+  interpolate("0123", walkCycle);
+  sideStep(170, 0, 50, 1);
+  sideStep(170, 0, 50, 3);
+  sideStep(170, 0, 0, 0);
+  sideStep(170, 0, 0, 2);  
+  interpolate("0123", walkCycle);
+  
+  sideStep(130, 0, 25, 1); //all legs brought to starting position
+  sideStep(130, 0, 25, 3);    
+  interpolate("0123", walkCycle);
+  sideStep(170, 0, 0, 1);
+  sideStep(170, 0, 0, 3);   
+  interpolate("0123", walkCycle);
+}
+void turningWalkingSequenceClockwise(double walkCycle)
+{
+  sideStep(170, 0, 25, 0); //opp legs push away
+  sideStep(170, 0, 25, 2);
+  sideStep(130, 0, 0, 1); //other legs raise
+  sideStep(130, 0, 0, 3);  
+  interpolate("0123", walkCycle);
+  sideStep(170, 0, 50, 0);
+  sideStep(170, 0, 50, 2);
+  sideStep(170, 0, 0, 1);
+  sideStep(170, 0, 0, 3);  
+  interpolate("0123", walkCycle);
+  
+  sideStep(130, 0, 25, 0); //all legs brought to starting position
+  sideStep(130, 0, 25, 2);    
+  interpolate("0123", walkCycle);
+  sideStep(170, 0, 0, 0);
+  sideStep(170, 0, 0, 2);   
+  interpolate("0123", walkCycle);
+}
+void turningWalkingSequence(double walkCycle)
+{
+  sideStep(30, 0, 170, 0);
+  sideStep(30, 0, 170, 2);
+  sideStep(30, 0, 140, 1);
+  sideStep(30, 0, 140, 3);
+  interpolate("0123", walkCycle);
+  sideStep(60, 0, 170, 0);
+  sideStep(60, 0, 170, 2);
+  sideStep(60, 0, 170, 1);
+  sideStep(60, 0, 170, 3);
+  interpolate("0123", walkCycle); 
+
+  sideStep(30, 0, 170, 1);
+  sideStep(30, 0, 170, 3);
+  sideStep(30, 0, 140, 0);
+  sideStep(30, 0, 140, 2);
+  interpolate("0123", walkCycle);
+  sideStep(60, 0, 170, 1);
+  sideStep(60, 0, 170, 3);
+  sideStep(60, 0, 170, 0);
+  sideStep(60, 0, 170, 2);
+  interpolate("0123", walkCycle); 
+}
+
 
 void straightWalkingSequence()
 {
@@ -210,7 +240,7 @@ void straightWalkingSequence()
   interpolate("0123");
   //delay(3000);
 }
-void interpolate(String legs)
+void interpolate(String legs, double walkCycle)
 {
   double fServoValChange0;
   double tServoValChange0;
@@ -225,18 +255,12 @@ void interpolate(String legs)
   double tServoValChange3;
   double aServoValChange3;
 
-  bool rateSet = false;
-  double setRate = 0;
+  double setRate = walkCycle/20000;
 
   //ESTABLISHING THE CHANGE RATES FOR EVERY VARIABLE
   if (legs.charAt(0) == '0')
   {
-    rateSet = true;
-    setRate = abs(femurAngle0 - femurAngleOld0) + 1;
-    if ((femurAngle0 - femurAngleOld0) < 0)
-      fServoValChange0 = (femurAngle0 - femurAngleOld0 - 1) / setRate;
-    else
-      fServoValChange0 = (femurAngle0 - femurAngleOld0 + 1) / setRate;
+    fServoValChange0 = (femurAngle0 - femurAngleOld0) / setRate;
     tServoValChange0 = (tibiaAngle0 - tibiaAngleOld0) / setRate;
     aServoValChange0 = (abductorAngle0 - abductorAngleOld0) / setRate;
 
@@ -250,16 +274,7 @@ void interpolate(String legs)
   }
   if (legs.charAt(1) == '1')
   {
-    if (rateSet == false) {
-      rateSet = true;
-      setRate = abs(femurAngle1 - femurAngleOld1) + 1;
-      if ((femurAngle1 - femurAngleOld1) < 0)
-        fServoValChange1 = (femurAngle1 - femurAngleOld1 - 1) / setRate;
-      else
-        fServoValChange1 = (femurAngle1 - femurAngleOld1 + 1) / setRate;
-    }
-    else
-      fServoValChange1 = (femurAngle1 - femurAngleOld1) / setRate;
+    fServoValChange1 = (femurAngle1 - femurAngleOld1) / setRate;
     tServoValChange1 = (tibiaAngle1 - tibiaAngleOld1) / setRate;
     aServoValChange1 = (abductorAngle1 - abductorAngleOld1) / setRate;
 
@@ -273,16 +288,7 @@ void interpolate(String legs)
   }
   if (legs.charAt(2) == '2')
   {
-    if (rateSet == false) {
-      rateSet = true;
-      setRate = abs(femurAngle2 - femurAngleOld2) + 1;
-      if ((femurAngle2 - femurAngleOld2) < 0)
-        fServoValChange2 = (femurAngle2 - femurAngleOld2 - 1) / setRate;
-      else
-        fServoValChange2 = (femurAngle2 - femurAngleOld2 + 1) / setRate;
-    }
-    else
-      fServoValChange2 = (femurAngle2 - femurAngleOld2) / setRate;
+    fServoValChange2 = (femurAngle2 - femurAngleOld2) / setRate;
     tServoValChange2 = (tibiaAngle2 - tibiaAngleOld2) / setRate;
     aServoValChange2 = (abductorAngle2 - abductorAngleOld2) / setRate;
 
@@ -296,17 +302,7 @@ void interpolate(String legs)
   }
   if (legs.charAt(3) == '3')
   {
-    if (rateSet == false) {
-      rateSet = true;
-      setRate = abs(femurAngle3 - femurAngleOld3) + 1;
-      fServoValChange3 = (femurAngle3 - femurAngleOld3 + 1) / setRate;
-      if ((femurAngle3 - femurAngleOld3) < 0)
-        fServoValChange3 = (femurAngle3 - femurAngleOld3 - 1) / setRate;
-      else
-        fServoValChange3 = (femurAngle3 - femurAngleOld3 + 1) / setRate;
-    }
-    else
-      fServoValChange3 = (femurAngle3 - femurAngleOld3 + 1) / setRate;
+    fServoValChange3 = (femurAngle3 - femurAngleOld3) / setRate;
     tServoValChange3 = (tibiaAngle3 - tibiaAngleOld3) / setRate;
     aServoValChange3 = (abductorAngle3 - abductorAngleOld3) / setRate;
 
@@ -364,7 +360,6 @@ void interpolate(String legs)
     }
     delayMicroseconds(walkCycle / setRate);
   }
-
 }
 
 
@@ -416,7 +411,7 @@ void stepForth(double desiredHeight, double forwardDist, int leg)
       break;
   }
 }
-void sideStep(double latDist, double forwardDist, double oldLegLength, int leg)
+void sideStep(double oldLegLength, double forwardDist, double latDist,  int leg)
 {
   latDist += 39.35;//40.60;//
   oldLegLength -= 13.1;
