@@ -29,6 +29,11 @@ Adafruit_PWMServoDriver pca9685 = Adafruit_PWMServoDriver(0x40);
 #define ABDUCTOR_OFFSET 40.45//42.66  //39.20
 #define ABDUCTOR_LEG_ANGLE 72.05//72.12 //70.48
 
+#define aRATIO2 1.5778
+#define aRATIO1 1.5778
+#define aRATIO0 1.5778
+#define aRATIO3 1.6333
+
 
 #define SERVOMIN2  66
 #define SERVOMAX2  584
@@ -143,10 +148,33 @@ void loop() {
     //pca9685.setPWM(tSER2, 0, SERVOMAX2 - 13 - 0 * tRATIO2);
     //pca9685.setPWM(aSER2, 0, SERVOMIN + (74.61 + 0) * RATIO);
     
-      pca9685.setPWM(fSER3, 0, SERVOMAX2 - (0 + 47) * fRATIO3);
-      pca9685.setPWM(tSER3, 0, SERVOMAX2 - 13 - 0 * tRATIO3);
-      pca9685.setPWM(aSER3, 0, SERVOMAX - (45.40 + 0) * RATIO); 
-  
+      //pca9685.setPWM(fSER3, 0, SERVOMAX2 - (0 + 47) * fRATIO3);
+      //pca9685.setPWM(tSER3, 0, SERVOMAX2 - 13 - 0 * tRATIO3);
+      //pca9685.setPWM(aSER3, 0, SERVOMAX - (45.40 + 0) * RATIO); 
+      /*for(int i = 0; i < 700; i++)
+      {
+        pca9685.setPWM(7, 0, i);
+        Serial.println(i);
+        delay(200);
+      } */
+      //pca9685.setPWM(aSER2, 0, SERVOMIN + (74.61 + aServoVal2) * aRATIO2);
+      //pca9685.setPWM(aSER1, 0, SERVOMAX - (42.26 + aServoVal1) * aRATIO1);
+      //pca9685.setPWM(aSER2, 0, SERVOMIN2 + (47) * aRATIO2);
+      int i = 0;
+      /*for(i = SERVOMAX2; i > SERVOMIN2; i--)
+      {
+        pca9685.setPWM(aSER1, 0, SERVOMAX2-i+SERVOMIN2); //SERVOMIN2 ->
+        pca9685.setPWM(aSER2, 0, i); //SERVOMAX2 -> 
+        delay(50);
+      }*/
+      pca9685.setPWM(aSER1, 0, SERVOMIN2 + (90.6) * aRATIO1);
+      pca9685.setPWM(aSER2, 0, SERVOMAX2 - (91.3) * aRATIO2);
+
+      /*sideStep(150, 0, 75,  1);
+      sideStep(150, 0, 75,  2);
+      sideStep(150, 0, 75,  3);
+      sideStep(150, 0, 75,  0);      
+      interpolate("0123", walkCycle);*/
 }
 void turningWalkingSequenceCounterClockwise(double walkCycle)
 {
@@ -326,7 +354,7 @@ void interpolate(String legs, double walkCycle)
  
       pca9685.setPWM(fSER0, 0, SERVOMIN2 + (fServoVal0 + 47) * fRATIO0);
       pca9685.setPWM(tSER0, 0, SERVOMIN2 + 20 + tServoVal0 * tRATIO0);      
-      pca9685.setPWM(aSER0, 0, SERVOMIN + (aServoVal0 + 68.32) * RATIO);
+      pca9685.setPWM(aSER0, 0, SERVOMIN + (aServoVal0 + 68.32) * RATIO); //update servomin2 for all abductors aRATIO0
     }
     if (legs.charAt(1) == '1')
     {
@@ -336,8 +364,8 @@ void interpolate(String legs, double walkCycle)
 
       pca9685.setPWM(fSER1, 0, SERVOMIN2 + (fServoVal1 + 45) * fRATIO1);
       pca9685.setPWM(tSER1, 0, SERVOMIN2 + 15 + tServoVal1 * tRATIO1);
-      pca9685.setPWM(aSER1, 0, SERVOMAX - (42.26 + aServoVal1) * RATIO);
-    }
+      pca9685.setPWM(aSER1, 0, SERVOMIN2 + (90.3 - aServoVal1) * aRATIO1);
+    } 
     if (legs.charAt(2) == '2')
     {
       fServoVal2 = fServoVal2 + fServoValChange2;
@@ -346,7 +374,7 @@ void interpolate(String legs, double walkCycle)
 
       pca9685.setPWM(fSER2, 0, SERVOMAX2 - (fServoVal2 + 48) * fRATIO2);
       pca9685.setPWM(tSER2, 0, SERVOMAX2 - 13 - tServoVal2 * tRATIO2);
-      pca9685.setPWM(aSER2, 0, SERVOMIN + (74.61 + aServoVal2) * RATIO);
+      pca9685.setPWM(aSER2, 0, SERVOMAX2 - (89.3 - aServoVal2) * aRATIO2); //abductor change from old ratio for 1234
     }
     if (legs.charAt(3) == '3')
     {
@@ -356,7 +384,7 @@ void interpolate(String legs, double walkCycle)
 
       pca9685.setPWM(fSER3, 0, SERVOMAX2 - (fServoVal3 + 47) * fRATIO3);
       pca9685.setPWM(tSER3, 0, SERVOMAX2 - 13 - tServoVal3 * tRATIO3);
-      pca9685.setPWM(aSER3, 0, SERVOMAX - (45.40 + aServoVal3) * RATIO);
+      pca9685.setPWM(aSER3, 0, SERVOMAX - (45.40 + aServoVal3) * RATIO); //aRATIO3
     }
     delayMicroseconds(walkCycle / setRate);
   }
@@ -411,7 +439,7 @@ void stepForth(double desiredHeight, double forwardDist, int leg)
       break;
   }
 }
-void sideStep(double oldLegLength, double forwardDist, double latDist,  int leg)
+void sideStep(double oldLegLength, double forwardDist, double latDist,  int leg) 
 {
   latDist += 39.35;//40.60;//
   oldLegLength -= 13.1;
@@ -445,10 +473,10 @@ void sideStep(double oldLegLength, double forwardDist, double latDist,  int leg)
 void verticalAbductors()
 {
   //VERTICAL ABDUCTORS
-  pca9685.setPWM(aSER0, 0, VERTICALABDUCTOR02 - 4);
-  pca9685.setPWM(aSER1, 0, 693 - VERTICALABDUCTOR02);
-  pca9685.setPWM(aSER2, 0, VERTICALABDUCTOR02 + 10);
-  pca9685.setPWM(aSER3, 0, 686 - VERTICALABDUCTOR02);
+  pca9685.setPWM(aSER0, 0, VERTICALABDUCTOR02 - 4); //change
+  pca9685.setPWM(aSER1, 0, SERVOMIN2 + (90.3) * aRATIO1);
+  pca9685.setPWM(aSER2, 0, SERVOMAX2 - (89.3) * aRATIO2);
+  pca9685.setPWM(aSER3, 0, 686 - VERTICALABDUCTOR02); //change
 }
 
 void defaultPosition()
