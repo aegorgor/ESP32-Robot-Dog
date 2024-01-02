@@ -9,7 +9,6 @@ void RServo::controlServo(double servoVal)
     pca9685.setPWM(this->servoNum, 0, SERVOMAX2 - (this->servoVal + this->defaultOffset) * this->servoRatio);
   else
     pca9685.setPWM(this->servoNum, 0, SERVOMIN2 + (this->servoVal + this->defaultOffset) * this->servoRatio);
-  Serial.println("fwd task");
 }
 
 void RServo::controlServo()

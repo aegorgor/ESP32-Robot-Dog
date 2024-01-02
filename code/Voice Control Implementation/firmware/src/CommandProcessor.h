@@ -10,7 +10,7 @@ class CommandProcessor
 private:
     QueueHandle_t m_command_queue_handle;
     void processCommand(uint16_t commandIndex);
-    int walkCycle = 450000;
+    int walkCycles[3] = {700000, 500000, 300000};
     int speed = 0;
     int lastCommandIndex;
 public:

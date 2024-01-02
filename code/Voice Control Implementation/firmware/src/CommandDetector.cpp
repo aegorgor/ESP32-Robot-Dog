@@ -95,7 +95,7 @@ void CommandDetector::run()
     }
     long end = millis();
     // sanity check best score and check the cool down period
-    if (best_score > DETECTION_THRESHOLD && best_index != NUMBER_COMMANDS - 1 && start - m_last_detection > 1000)
+    if (best_score > DETECTION_THRESHOLD && best_index != NUMBER_COMMANDS - 1 && start - m_last_detection > 600)
     {
         m_command_processor->newCommand = true;
         m_last_detection = start;

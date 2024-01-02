@@ -27,30 +27,60 @@ void commandQueueProcessorTask(void *param)
 void CommandProcessor::processCommand(uint16_t commandIndex)
 {
     newCommand = false;
+    int walkCycle = walkCycles[0];
     switch (commandIndex)
     {
-    case 0: // forward
-        while(newCommand == false)
-            gaits::straightWalkingSequence(walkCycle);
-        vTaskDelay(1000 / portTICK_PERIOD_MS);  //does this need to be removed?
+    case 0:
+        if(speed < 3) speed++;
+        switch (abs(speed))
+        {
+            case 1: walkCycle = walkCycles[0]; break;
+            case 2: walkCycle = walkCycles[1]; break;
+            case 3: walkCycle = walkCycles[2]; break;
+        }
+        if(speed < 0){
+            while(newCommand == false){
+                Serial.println("fwd task");
+                gaits::straightWalkingSequenceRear(walkCycle);
+            }
+        }
+        else if(speed > 0){
+            while(newCommand == false){
+                Serial.println("fwd task");
+                gaits::straightWalkingSequence(walkCycle);
+            }
+        }
         break;
-    case 1: // backward
-        while(newCommand == false)
-            gaits::straightWalkingSequenceRear(walkCycle);
-        Serial.println("bwd task");
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
+    case 1:
+        if(speed > -3) speed--;
+        switch (abs(speed))
+        {
+            case 1: walkCycle = walkCycles[0]; break;
+            case 2: walkCycle = walkCycles[1]; break;
+            case 3: walkCycle = walkCycles[2]; break;
+        }
+        if(speed < 0){
+            while(newCommand == false){
+                Serial.println("fwd task");
+                gaits::straightWalkingSequenceRear(walkCycle);
+            }
+        }
+        else if(speed > 0){
+            while(newCommand == false){
+                Serial.println("fwd task");
+                gaits::straightWalkingSequence(walkCycle);
+            }
+        }
         break;
-    case 2: // left
+    case 2:
         while(newCommand == false)
-            gaits::turningWalkingSequenceCounterClockwise(walkCycle);
+            gaits::turningWalkingSequenceCounterClockwise(walkCycles[1]);
         Serial.println("left task");
-        vTaskDelay(500 / portTICK_PERIOD_MS);
         break;
     case 3: // right
         while(newCommand == false)
-            gaits::turningWalkingSequenceClockwise(walkCycle);
+            gaits::turningWalkingSequenceClockwise(walkCycles[1]);
         Serial.println("right task");
-        vTaskDelay(500 / portTICK_PERIOD_MS);
         break;
     }
 

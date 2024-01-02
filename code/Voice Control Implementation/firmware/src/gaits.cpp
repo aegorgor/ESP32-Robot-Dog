@@ -91,44 +91,44 @@ void gaits::straightWalkingSequenceRear(double walkCycleTotal)
   
   leg0.setXZ(155, 0); 
   leg2.setXZ(155, 0);
-  leg1.setXZ(170, -10); //Mid point
-  leg3.setXZ(170, -10);
+  leg1.setXZ(170, 10); //Mid point
+  leg3.setXZ(170, 10);
   interpolate("0123", walkCycleSub);
-  leg0.setXZ(155, 20); 
-  leg2.setXZ(155, 20);
-  leg1.setXZ(170, -20); //Mid point
-  leg3.setXZ(170, -20);
+  leg0.setXZ(155, -20); 
+  leg2.setXZ(155, -20);
+  leg1.setXZ(170, 20); //Mid point
+  leg3.setXZ(170, 20);
   interpolate("0123", walkCycleSub);
-  leg0.setXZ(155, 40); 
-  leg2.setXZ(155, 40);
-  leg1.setXZ(170, -30); //Mid point
-  leg3.setXZ(170, -30);
+  leg0.setXZ(155, -40); 
+  leg2.setXZ(155, -40);
+  leg1.setXZ(170, 30); //Mid point
+  leg3.setXZ(170, 30);
   interpolate("0123", walkCycleSub);
-  leg0.setXZ(170, 40); 
-  leg2.setXZ(170, 40);
-  leg1.setXZ(170, -40); //Mid point
-  leg3.setXZ(170, -40);
+  leg0.setXZ(170, -40); 
+  leg2.setXZ(170, -40);
+  leg1.setXZ(170, 40); //Mid point
+  leg3.setXZ(170, 40);
   interpolate("0123", walkCycleSub);
 
   leg1.setXZ(155, 0); 
   leg3.setXZ(155, 0);
-  leg0.setXZ(170, -10); //Mid point
-  leg2.setXZ(170, -10);
+  leg0.setXZ(170, 10); //Mid point
+  leg2.setXZ(170, 10);
   interpolate("0123", walkCycleSub);
-  leg1.setXZ(155, 20); 
-  leg3.setXZ(155, 20);
-  leg0.setXZ(170, -20); //Mid point
-  leg2.setXZ(170, -20);
+  leg1.setXZ(155, -20); 
+  leg3.setXZ(155, -20);
+  leg0.setXZ(170, 20); //Mid point
+  leg2.setXZ(170, 20);
   interpolate("0123", walkCycleSub);
-  leg1.setXZ(155, 40); 
-  leg3.setXZ(155, 40);
-  leg0.setXZ(170, -30); //Mid point
-  leg2.setXZ(170, -30);
+  leg1.setXZ(155, -40); 
+  leg3.setXZ(155, -40);
+  leg0.setXZ(170, 30); //Mid point
+  leg2.setXZ(170, 30);
   interpolate("0123", walkCycleSub);
-  leg1.setXZ(170, 40); 
-  leg3.setXZ(170, 40);
-  leg0.setXZ(170, -40); //Mid point
-  leg2.setXZ(170, -40);
+  leg1.setXZ(170, -40); 
+  leg3.setXZ(170, -40);
+  leg0.setXZ(170, 40); //Mid point
+  leg2.setXZ(170, 40);
   interpolate("0123", walkCycleSub);
 }
 void gaits::turningWalkingSequenceCounterClockwise(double walkCycleTotal)
