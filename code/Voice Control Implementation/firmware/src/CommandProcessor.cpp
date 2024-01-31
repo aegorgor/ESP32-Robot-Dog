@@ -73,17 +73,23 @@ void CommandProcessor::processCommand(uint16_t commandIndex)
         }
         break;
     case 2:
-        while(newCommand == false)
-            gaits::turningWalkingSequenceCounterClockwise(walkCycles[1]);
+        if(lastCommandIndex != 3)
+        {
+            while(newCommand == false)
+                gaits::turningWalkingSequenceCounterClockwise(walkCycles[1]);
+        }
         Serial.println("left task");
         break;
     case 3: // right
-        while(newCommand == false)
-            gaits::turningWalkingSequenceClockwise(walkCycles[1]);
+        if(lastCommandIndex != 2)
+        {
+            while(newCommand == false)
+                gaits::turningWalkingSequenceClockwise(walkCycles[1]);
+        }
         Serial.println("right task");
         break;
     }
-
+    lastCommandIndex = commandIndex;
 }
 
 CommandProcessor::CommandProcessor()

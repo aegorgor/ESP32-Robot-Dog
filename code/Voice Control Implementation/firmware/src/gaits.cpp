@@ -42,18 +42,18 @@ void gaits::straightWalkingSequence(double walkCycleTotal)
   int stepLength = 30;
   double walkCycleSub = walkCycleTotal / 8;
   
-  leg0.setXZ(155, 0); 
-  leg2.setXZ(155, 0);
+  leg0.setXZ(145, 0); 
+  leg2.setXZ(145, 0);
   leg1.setXZ(170, -10); //Mid point
   leg3.setXZ(170, -10);
   interpolate("0123", walkCycleSub);
-  leg0.setXZ(155, 20); 
-  leg2.setXZ(155, 20);
+  leg0.setXZ(145, 20); 
+  leg2.setXZ(145, 20);
   leg1.setXZ(170, -20); //Mid point
   leg3.setXZ(170, -20);
   interpolate("0123", walkCycleSub);
-  leg0.setXZ(155, 40); 
-  leg2.setXZ(155, 40);
+  leg0.setXZ(145, 40); 
+  leg2.setXZ(145, 40);
   leg1.setXZ(170, -30); //Mid point
   leg3.setXZ(170, -30);
   interpolate("0123", walkCycleSub);
@@ -63,18 +63,18 @@ void gaits::straightWalkingSequence(double walkCycleTotal)
   leg3.setXZ(170, -40);
   interpolate("0123", walkCycleSub);
 
-  leg1.setXZ(155, 0); 
-  leg3.setXZ(155, 0);
+  leg1.setXZ(145, 0); 
+  leg3.setXZ(145, 0);
   leg0.setXZ(170, -10); //Mid point
   leg2.setXZ(170, -10);
   interpolate("0123", walkCycleSub);
-  leg1.setXZ(155, 20); 
-  leg3.setXZ(155, 20);
+  leg1.setXZ(145, 20); 
+  leg3.setXZ(145, 20);
   leg0.setXZ(170, -20); //Mid point
   leg2.setXZ(170, -20);
   interpolate("0123", walkCycleSub);
-  leg1.setXZ(155, 40); 
-  leg3.setXZ(155, 40);
+  leg1.setXZ(145, 40); 
+  leg3.setXZ(145, 40);
   leg0.setXZ(170, -30); //Mid point
   leg2.setXZ(170, -30);
   interpolate("0123", walkCycleSub);
@@ -89,18 +89,18 @@ void gaits::straightWalkingSequenceRear(double walkCycleTotal)
   int stepLength = 30;
   double walkCycleSub = walkCycleTotal / 8;
   
-  leg0.setXZ(155, 0); 
-  leg2.setXZ(155, 0);
+  leg0.setXZ(145, 0); 
+  leg2.setXZ(145, 0);
   leg1.setXZ(170, 10); //Mid point
   leg3.setXZ(170, 10);
   interpolate("0123", walkCycleSub);
-  leg0.setXZ(155, -20); 
-  leg2.setXZ(155, -20);
+  leg0.setXZ(145, -20); 
+  leg2.setXZ(145, -20);
   leg1.setXZ(170, 20); //Mid point
   leg3.setXZ(170, 20);
   interpolate("0123", walkCycleSub);
-  leg0.setXZ(155, -40); 
-  leg2.setXZ(155, -40);
+  leg0.setXZ(145, -40); 
+  leg2.setXZ(145, -40);
   leg1.setXZ(170, 30); //Mid point
   leg3.setXZ(170, 30);
   interpolate("0123", walkCycleSub);
@@ -110,18 +110,18 @@ void gaits::straightWalkingSequenceRear(double walkCycleTotal)
   leg3.setXZ(170, 40);
   interpolate("0123", walkCycleSub);
 
-  leg1.setXZ(155, 0); 
-  leg3.setXZ(155, 0);
+  leg1.setXZ(145, 0); 
+  leg3.setXZ(145, 0);
   leg0.setXZ(170, 10); //Mid point
   leg2.setXZ(170, 10);
   interpolate("0123", walkCycleSub);
-  leg1.setXZ(155, -20); 
-  leg3.setXZ(155, -20);
+  leg1.setXZ(145, -20); 
+  leg3.setXZ(145, -20);
   leg0.setXZ(170, 20); //Mid point
   leg2.setXZ(170, 20);
   interpolate("0123", walkCycleSub);
-  leg1.setXZ(155, -40); 
-  leg3.setXZ(155, -40);
+  leg1.setXZ(145, -40); 
+  leg3.setXZ(145, -40);
   leg0.setXZ(170, 30); //Mid point
   leg2.setXZ(170, 30);
   interpolate("0123", walkCycleSub);
@@ -142,8 +142,8 @@ void gaits::turningWalkingSequenceCounterClockwise(double walkCycleTotal)
   interpolate("0123", walkCycleSub);
   leg0.setXYZ(170, 0, 90);
   leg2.setXYZ(170, 0, 90);
-  leg1.setXYZ(160, 0, 0);
-  leg3.setXYZ(160, 0, 0);
+  leg1.setXYZ(155, 0, 0);
+  leg3.setXYZ(155, 0, 0);
   interpolate("0123", walkCycleSub);
   
   leg0.setXYZ(140, 0, 90); //all legs brought to starting position
@@ -158,8 +158,8 @@ void gaits::turningWalkingSequenceCounterClockwise(double walkCycleTotal)
   interpolate("0123", (int)(walkCycleSub*0.7));
   leg0.setXYZ(170, 0, 0);
   leg2.setXYZ(170, 0, 0);
-  leg1.setXYZ(160, 0, 0);
-  leg3.setXYZ(160, 0, 0);
+  leg1.setXYZ(155, 0, 0);
+  leg3.setXYZ(155, 0, 0);
   interpolate("0123", (int)(walkCycleSub*0.7));
 }
  void gaits::turningWalkingSequenceClockwise(double walkCycleTotal)
@@ -173,8 +173,8 @@ void gaits::turningWalkingSequenceCounterClockwise(double walkCycleTotal)
   interpolate("0123", walkCycleSub);
   leg1.setXYZ(170, 0, 90);
   leg3.setXYZ(170, 0, 90);
-  leg0.setXYZ(160, 0, 0);
-  leg2.setXYZ(160, 0, 0);
+  leg0.setXYZ(155, 0, 0);
+  leg2.setXYZ(155, 0, 0);
   interpolate("0123", walkCycleSub);
   
   leg1.setXYZ(140, 0, 90); //all legs brought to starting position
@@ -189,7 +189,7 @@ void gaits::turningWalkingSequenceCounterClockwise(double walkCycleTotal)
   interpolate("0123", (int)(walkCycleSub*0.7));
   leg1.setXYZ(170, 0, 0);
   leg3.setXYZ(170, 0, 0);
-  leg0.setXYZ(160, 0, 0);
-  leg2.setXYZ(160, 0, 0);
+  leg0.setXYZ(155, 0, 0);
+  leg2.setXYZ(155, 0, 0);
   interpolate("0123", (int)(walkCycleSub*0.7));
 }
